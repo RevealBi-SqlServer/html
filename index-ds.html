@@ -11,16 +11,22 @@
     <div id="viewer"  style="height: calc(100vh - 20px); width: 100%;"></div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
-    <script src="https://dl.revealbi.io/reveal/libs/1.7.0/infragistics.reveal.js"></script>
+    <script src="https://dl.revealbi.io/reveal/libs/1.7.1/infragistics.reveal.js"></script>
 
     <script type="text/javascript">
         $.ig.RevealSdkSettings.setBaseUrl("http://localhost:5111/");
         
+        $.ig.RevealSdkSettings.setAdditionalHeadersProvider(function (url) {
+            return headers;
+        });
+        const headers = {};
+
         var revealView = new $.ig.RevealView("#viewer");
                
         revealView.startInEditMode = true;  
 
         revealView.onDataSourcesRequested = (callback) => {        
+            headers["x-header-one"] = "BLONP";
             var sqlServerDataSource = new $.ig.RVAzureSqlDataSource();
             sqlServerDataSource.id="sqlServer";
             sqlServerDataSource.title = "Northwind Database ";

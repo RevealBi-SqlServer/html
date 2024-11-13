@@ -17,10 +17,18 @@
     <script type="text/javascript">
         $.ig.RevealSdkSettings.setBaseUrl("http://localhost:5111/");  
         
+        $.ig.RevealSdkSettings.setAdditionalHeadersProvider(function (url) {
+            return headers;
+        });
+
+        const headers = {};
+
+
         // enable interactive hovering
         $.ig.RevealSdkSettings.enableActionsOnHoverTooltip = true;
         
-        $.ig.RVDashboard.loadDashboard("Sales").then(dashboard => { 
+        $.ig.RVDashboard.loadDashboard("Marketing").then(dashboard => { 
+            headers["x-header-one"] = "BLONP";
             var revealView = new $.ig.RevealView("#revealView");        
             //revealView.canEdit = false;
             revealView.interactiveFilteringEnabled = true;        
