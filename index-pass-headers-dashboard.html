@@ -39,7 +39,7 @@
             const selectedValue = selectedOption.value;
             if (selectedValue !== "") {
                 headers["x-header-one"] = selectedValue;
-                $.ig.RVDashboard.loadDashboard("Freight Analysis").then(dashboard => {
+                $.ig.RVDashboard.loadDashboard("CustomerOrders").then(dashboard => {
                     revealView.dashboard = dashboard;
                 });
             }

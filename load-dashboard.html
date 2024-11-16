@@ -20,16 +20,16 @@
         $.ig.RevealSdkSettings.setAdditionalHeadersProvider(function (url) {
             return headers;
         });
-
         const headers = {};
-
-
         // enable interactive hovering
         $.ig.RevealSdkSettings.enableActionsOnHoverTooltip = true;
         
-        $.ig.RVDashboard.loadDashboard("Marketing").then(dashboard => { 
-            headers["x-header-one"] = "BLONP";
-            var revealView = new $.ig.RevealView("#revealView");        
+        $.ig.RVDashboard.loadDashboard("CustomerOrders").then(dashboard => { 
+            
+            var revealView = new $.ig.RevealView("#revealView");      
+            headers["x-header-one"] = "BLONP";  
+
+            console.log(headers);
             //revealView.canEdit = false;
             revealView.interactiveFilteringEnabled = true;        
             revealView.dashboard = dashboard;
