@@ -21,6 +21,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@revealbi/dom/index.umd.min.js"></script>
     <script>
         $.ig.RevealSdkSettings.setBaseUrl("http://localhost:5111");
+        $.ig.RevealSdkSettings.setAdditionalHeadersProvider(function (url) {
+            return headers;
+        });
+        const headers = {};
     </script>
 </head>
 <body>
@@ -74,7 +78,9 @@
             sqlDataSourceItem.subtitle = "SQL OrdersQry Data Source Item";
             sqlDataSourceItem.isAnonymous = true;
             sqlDataSourceItem.fields = getOrdersQryFields();
-
+            
+            headers["x-header-one"] = "BLONP";
+            
             return sqlDataSourceItem;
         }
 
