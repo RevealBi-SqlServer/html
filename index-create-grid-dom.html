@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reveal SDK - Web Component</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.8.21/dayjs.min.js"></script>
+    <script src="https://dl.revealbi.io/reveal/libs/1.7.0/infragistics.reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal-sdk-wrappers/index.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@revealbi/dom/index.umd.min.js"></script>
+    <script>
+        $.ig.RevealSdkSettings.setBaseUrl("http://localhost:5111");
+    </script>
+</head>
+<body>
+    <rv-reveal-view id="viewer"></rv-reveal-view>
+    <script>
+        const createDashboard = () => {
+            const document = new dom.RdashDocument("SQL OrdersQry Dashboard");
+            const ordersQryDataSource = getOrdersQryDataSourceItem();
+            
+            const ordersGrid = new dom.GridVisualization("All Orders", ordersQryDataSource).setColumns(
+                "OrderID",
+                "CustomerID",
+                "EmployeeID",
+                "OrderDate",
+                "RequiredDate",
+                "ShippedDate",
+                "ShipVia",
+                "Freight",
+                "ShipName",
+                "ShipAddress",
+                "ShipCity",
+                "ShipPostalCode",
+                "ShipCountry",
+                "CompanyName",
+                "Address",
+                "City",
+                "Region",
+                "PostalCode"
+            );
+
+            //column
+            const dateMonthLabel = new dom.DateDataField("OrderDate");
+            dateMonthLabel.aggregationType = dom.DateAggregationType.Year;
+
+            const value = new dom.NumberDataField("OrderID");
+            value.aggregationType = dom.AggregationType.CountRows;
+
+            const column = new dom.ColumnChartVisualization("Orders by Year", ordersQryDataSource).setLabel(dateMonthLabel).setValues(value)
+
+
+            document.visualizations = [ordersGrid, column];
+            return document;
+        };
+
+        function getOrdersQryDataSourceItem() {
+            const dataSource = new dom.DataSource();
+            dataSource.title = "SQL OrdersQry Data Source";
+            dataSource.subtitle = "Orders data from SQL Server";
+
+            const sqlDataSourceItem = new dom.MicrosoftSqlServerDataSourceItem("OrdersQry", "OrdersQry", dataSource);
+            sqlDataSourceItem.subtitle = "SQL OrdersQry Data Source Item";
+            sqlDataSourceItem.isAnonymous = true;
+            sqlDataSourceItem.fields = getOrdersQryFields();
+
+            return sqlDataSourceItem;
+        }
+
+        function getOrdersQryFields() {
+            return [
+                new dom.TextField("OrderID"),
+                new dom.TextField("CustomerID"),
+                new dom.NumberField("EmployeeID"),
+                new dom.DateField("OrderDate"),
+                new dom.DateField("RequiredDate"),
+                new dom.DateField("ShippedDate"),
+                new dom.NumberField("ShipVia"),
+                new dom.NumberField("Freight"),
+                new dom.TextField("ShipName"),
+                new dom.TextField("ShipAddress"),
+                new dom.TextField("ShipCity"),
+                new dom.TextField("ShipPostalCode"),
+                new dom.TextField("ShipCountry"),
+                new dom.TextField("CompanyName"),
+                new dom.TextField("Address"),
+                new dom.TextField("City"),
+                new dom.TextField("Region"),
+                new dom.TextField("PostalCode")
+            ];
+        }
+
+        const revealView = document.getElementById("viewer");
+        revealView.dashboard = createDashboard();
+    </script>
+</body>
+</html>
