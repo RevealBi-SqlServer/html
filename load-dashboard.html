@@ -9,33 +9,27 @@
 </head>
 
 <body>
+    <div id="revealView" style="height: calc(100vh - 25px); width: 100%;"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js" ></script>    
     <script>window.revealDisableKeyboardManagement = true;</script>   
-    <script src="https://dl.revealbi.io/reveal/libs/1.7.0/infragistics.reveal.js"></script>
+    <script src="https://dl.revealbi.io/reveal/libs/1.7.1/infragistics.reveal.js"></script>
 
     <script type="text/javascript">
-        $.ig.RevealSdkSettings.setBaseUrl("http://localhost:5111/");  
-        
+        $.ig.RevealSdkSettings.setBaseUrl("http://localhost:5111/");          
         $.ig.RevealSdkSettings.setAdditionalHeadersProvider(function (url) {
             return headers;
         });
         const headers = {};
-        // enable interactive hovering
         $.ig.RevealSdkSettings.enableActionsOnHoverTooltip = true;
-        
-        $.ig.RVDashboard.loadDashboard("CustomerOrders").then(dashboard => { 
-            
-            var revealView = new $.ig.RevealView("#revealView");      
-            headers["x-header-one"] = "BLONP";  
-
-            console.log(headers);
-            //revealView.canEdit = false;
-            revealView.interactiveFilteringEnabled = true;        
+        let revealView = new $.ig.RevealView("#revealView");
+        headers["x-header-one"] = "BLONP";
+        $.ig.RVDashboard.loadDashboard("Marketing").then(dashboard => {
+            revealView.interactiveFilteringEnabled = true;    
             revealView.dashboard = dashboard;
         });
     </script>
-    <div id="revealView" style="height: calc(100vh - 25px); width: 100%;"></div>
 </body>
 
 </html>
