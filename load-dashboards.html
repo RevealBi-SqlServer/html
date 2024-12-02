@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reveal Sdk - Load Dashboard</title>
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+    <script>window.revealDisableKeyboardManagement = true;</script>
+    <script src="https://dl.revealbi.io/reveal/libs/1.7.1/infragistics.reveal.js"></script>
+
+    <h1>Select a Dashboard</h1>
+    <select id="dashboardSelector">
+        <option value="">-- Select a Dashboard --</option>
+    </select>
+
+    <div id="revealView" style="height: calc(100vh - 130px); width: 100%; margin-top: 20px;"></div>
+
+    <script type="text/javascript">
+        // Define the base URL as a variable to reuse in multiple places
+        const baseUrl = "http://localhost:5111/";
+
+        // Set the Reveal SDK base URL
+        $.ig.RevealSdkSettings.setBaseUrl(baseUrl);
+        $.ig.RevealSdkSettings.enableActionsOnHoverTooltip = true;
+
+        // Fetch dashboard names from the API
+        async function fetchDashboardNames() {
+            try {
+                const response = await fetch(`${baseUrl}dashboards/names`);
+                if (!response.ok) {
+                    console.error('Error fetching dashboards:', response.statusText);
+                    return;
+                }
+                const dashboardNames = await response.json();
+                populateDashboardSelector(dashboardNames);
+            } catch (error) {
+                console.error('An unexpected error occurred:', error.message);
+            }
+        }
+
+        // Populate the dashboard selector with options
+        function populateDashboardSelector(dashboardNames) {
+            const selector = document.getElementById('dashboardSelector');
+            dashboardNames.forEach(dashboard => {
+                const option = document.createElement('option');
+                // Set value to the "file name" and the "title" in the dropdown
+                // remember the user can change a dashboard title, but the dashboard
+                // file name will remain the same
+                option.value = dashboard.dashboardFileName; 
+                option.textContent = dashboard.dashboardTitle;
+                selector.appendChild(option);
+            });
+
+            // Add change event listener to load the selected dashboard
+            selector.addEventListener('change', (event) => {
+                const selectedDashboard = event.target.value;
+                if (selectedDashboard) {
+                    loadDashboard(selectedDashboard);
+                }
+            });
+        }
+
+        // Load the selected dashboard into the RevealView
+        async function loadDashboard(dashboardName) {
+            try {
+                const dashboard = await $.ig.RVDashboard.loadDashboard(dashboardName);
+                const revealView = new $.ig.RevealView("#revealView");
+                revealView.interactiveFilteringEnabled = true;
+                revealView.dashboard = dashboard;
+            } catch (error) {
+                console.error('Error loading dashboard:', error.message);
+            }
+        }
+
+        // Fetch and populate the dashboard selector on page load
+        fetchDashboardNames();
+    </script>
+</body>
+
+</html>
