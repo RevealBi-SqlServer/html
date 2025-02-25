@@ -58,7 +58,7 @@
     <div id="revealView"  style="height: calc(100vh - 20px); width: 100%;"></div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
-    <script src="https://dl.revealbi.io/reveal/libs/1.7.1/infragistics.reveal.js"></script>
+    <script src="https://dl.revealbi.io/reveal/libs/1.7.2/infragistics.reveal.js"></script>
 
     <script type="text/javascript">
         $.ig.RevealSdkSettings.setBaseUrl("http://localhost:5111/");     
@@ -94,10 +94,10 @@
             dsi1.title = "Customer Orders History";
             dsi1.subtitle = "Stored Procedure";
 
-            var dsi2 = new $.ig.RVAzureSqlDataSourceItem(sqlServerDataSource);
-            dsi2.id="CustOrdersOrders";
-            dsi2.title = "Customer Orders Orders";
-            dsi2.subtitle = "Stored Procedure";
+            // var dsi2 = new $.ig.RVAzureSqlDataSourceItem(sqlServerDataSource);
+            // dsi2.id="CustOrdersOrders";
+            // dsi2.title = "Customer Orders Orders";
+            // dsi2.subtitle = "Stored Procedure";
 
             var dsi3 = new $.ig.RVAzureSqlDataSourceItem(sqlServerDataSource);
             dsi3.id="TenMostExpensiveProducts";
@@ -110,7 +110,7 @@
             dsi4.subtitle = "Custom SQL Query";
 
             callback(new $.ig.RevealDataSources([sqlServerDataSource],
-                [dsi1, dsi2, dsi3, dsi4 ], false));
+                [dsi1, dsi3, dsi4 ], false));
 
             };
     </script>
